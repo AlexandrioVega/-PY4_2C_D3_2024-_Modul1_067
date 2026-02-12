@@ -1,3 +1,4 @@
+enum ActivityType { increment, decrement, reset }
 class CounterController {
   int _counter = 0; 
 
@@ -5,12 +6,15 @@ class CounterController {
 
   int _step = 1;
   
-  final List<String> _history = [];
-  List<String> get history => List.unmodifiable(_history);
+  final List<HistoryItem> _history = [];
+
+  List<HistoryItem> get history => List.unmodifiable(_history);
+
+
 
   void increment(){
     _counter += _step;
-    _addHistory("Menambah $_step");
+    _addHistory("Menambah $_step", ActivityType.increment);
   } 
 
   void changeStep(int newStep){
@@ -22,7 +26,7 @@ class CounterController {
   void decrement() { 
     if (_counter > 0){
       _counter -= _step;
-      _addHistory("Mengurangi $_step");
+      _addHistory("Mengurangi $_step", ActivityType.decrement);
     }
     if(_counter < 0 ){
       reset();
@@ -31,18 +35,29 @@ class CounterController {
 
   void reset(){
     _counter = 0;
-    _addHistory("Reset ke 0");
+    _addHistory("Reset ke 0", ActivityType.reset);
   }
 
 
-  void _addHistory(String action) {
+  void _addHistory(String action, ActivityType type) {
     final time =
         "${DateTime.now().hour}:${DateTime.now().minute.toString().padLeft(2, '0')}";
 
-    _history.add("$action pada jam $time");
+    _history.add(HistoryItem(message: "$action pada $time", type: type));
 
     if (_history.length > 5) {
       _history.removeAt(0); 
     }
   }
 } 
+
+class HistoryItem {
+  final String message;
+  final ActivityType type;
+
+  HistoryItem({
+    required this.message,
+    required this.type,
+  });
+}
+
