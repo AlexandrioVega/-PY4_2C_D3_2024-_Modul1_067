@@ -177,9 +177,21 @@ class _CounterViewState extends State<CounterView> {
               });
 
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Data berhasil direset"),
-                  duration: Duration(seconds: 2),
+                SnackBar(
+                  content: Row(
+                    children: const [
+                      Icon(Icons.check_circle, color: Colors.white),
+                      SizedBox(width: 8),
+                      Text("Data berhasil direset"),
+                    ],
+                  ),
+                  backgroundColor: Colors.orange.shade400,
+                  behavior: SnackBarBehavior.floating,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  margin: const EdgeInsets.all(16),
+                  duration: const Duration(seconds: 2),
                 ),
               );
             },
