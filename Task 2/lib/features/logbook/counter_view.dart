@@ -19,6 +19,21 @@ class _CounterViewState extends State<CounterView> {
   final TextEditingController _stepTextController = TextEditingController(text: '1');
 
   @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  void _loadUserData() async {
+    int lastValue = await _controller.loadLastValue(widget.username);
+    await _controller.loadHistory(widget.username);
+    setState(() {
+      _controller.counter = lastValue; // set counter supaya UI update
+    });
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -105,7 +120,7 @@ class _CounterViewState extends State<CounterView> {
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      _controller.decrement();
+                      _controller.decrement(widget.username);
                     });
                   },
                   child: const Icon(Icons.remove),
@@ -121,7 +136,7 @@ class _CounterViewState extends State<CounterView> {
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      _controller.increment();
+                      _controller.increment(widget.username);
                     });
                   },
                   child: const Icon(Icons.add),
@@ -226,7 +241,7 @@ class _CounterViewState extends State<CounterView> {
               Navigator.pop(context); 
 
               setState(() {
-                _controller.reset();
+                _controller.reset(widget.username);
               });
 
               ScaffoldMessenger.of(context).showSnackBar(
