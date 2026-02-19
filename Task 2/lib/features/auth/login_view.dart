@@ -37,11 +37,11 @@ class _LoginViewState extends State<LoginView> {
     bool isSuccess = _controller.login(user, pass);
 
     if (isSuccess) {
-      Navigator.pushReplacement(
-        context,
+      Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (context) => CounterView(username: user),
+          builder: (_) => CounterView(username: user),
         ),
+        (route) => false,
       );
     } else {
       String msg = _controller.isLocked
