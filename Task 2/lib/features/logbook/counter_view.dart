@@ -3,7 +3,6 @@ import 'package:logbook_app_001/features/logbook/counter_controller.dart';
 import 'package:logbook_app_001/features/onboarding/onboarding_view.dart';
 
 class CounterView extends StatefulWidget {
-  // Tambahkan variabel final untuk menampung nama
   final String username;
 
   // Update Constructor agar mewajibkan (required) kiriman nama
@@ -13,6 +12,9 @@ class CounterView extends StatefulWidget {
   @override
   State<CounterView> createState() => _CounterViewState();
 }
+
+
+
 
 class _CounterViewState extends State<CounterView> {
   final CounterController _controller = CounterController();
@@ -32,10 +34,88 @@ class _CounterViewState extends State<CounterView> {
     });
   }
 
+  String getGreeting() {
+    final hour = DateTime.now().hour;
+
+    if (hour >= 6 && hour < 11) {
+      return "Selamat Pagi";
+    } else if (hour >= 11 && hour < 15) {
+      return "Selamat Siang";
+    } else if (hour >= 15 && hour < 18) {
+      return "Selamat Sore";
+    } else {
+      return "Selamat Malam";
+    }
+  }
+
+
+  Widget buildWelcomeBanner(String name) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        gradient: const LinearGradient(
+          colors: [
+            Color(0xFF4A90E2),
+            Color(0xFF007AFF),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blue.withOpacity(0.3),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          const Icon(
+            Icons.waving_hand_rounded,
+            color: Colors.white,
+            size: 40,
+          ),
+          const SizedBox(width: 15),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "${getGreeting()}, $name 👋",
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                const Text(
+                  "Semoga harimu menyenangkan!",
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
+    String userName = widget.username; // nanti bisa ambil dari login
+    
     return Scaffold(
+      backgroundColor: const Color(0xFFF5F7FA),
+      
       appBar: AppBar(
         // Gunakan widget.username untuk menampilkan data dari kelas utama
         title: Text("Logbook: ${widget.username}"),
@@ -87,12 +167,16 @@ class _CounterViewState extends State<CounterView> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
+            buildWelcomeBanner(userName),
+
+            const SizedBox(height: 20),
+
             const Text("Total Hitungan"),
             Text(
               '${_controller.counter}',
               style: const TextStyle(fontSize: 40),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 30),
 
             SizedBox(
               width: 140,
@@ -143,6 +227,8 @@ class _CounterViewState extends State<CounterView> {
                 ),
               ],
             ),
+
+            const SizedBox(height: 30),
 
             const Align(
               alignment: Alignment.centerLeft,

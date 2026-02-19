@@ -67,14 +67,23 @@ class _LoginViewState extends State<LoginView> {
           children: [
             TextField(
               controller: _userController,
-              decoration: const InputDecoration(labelText: "Username"),
+              decoration: const InputDecoration(
+                labelText: "Username",
+                border: OutlineInputBorder()
+              ),
+  
             ),
+
+
+            
             const SizedBox(height: 12),
-            TextField(
+
+          TextField(
               controller: _passController,
               obscureText: _isObscure, 
               decoration: InputDecoration(
                 labelText: "Password",
+                border: const OutlineInputBorder(),
                 suffixIcon: IconButton(
                   icon: Icon(
                     _isObscure ? Icons.visibility : Icons.visibility_off,
@@ -87,6 +96,7 @@ class _LoginViewState extends State<LoginView> {
                 ),
               ),
             ),
+            
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _handleLogin,
